@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+  <!-- Login Form -->
+  <div id="login-section" class="card">
+    <input type="text" id="username" placeholder="Username/Email">
+    <input type="password" id="password" placeholder="Password">
+    <button id="login-btn">Login</button>
+    <div id="error-message"></div>
+  </div>
+  
+  <!-- Profile Section -->
+  <div id="profile-section" class="hidden">
+    <header>
+      <h1 id="user-name"></h1>
+      <button id="logout-btn">Logout</button>
+    </header>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total XP</h3>
+        <p id="total-xp">0</p>
+      </div>
+      <div class="stat-card">
+        <h3>Audit Ratio</h3>
+        <p id="audit-ratio">0.00</p>
+      </div>
+      <div class="stat-card">
+        <h3>Projects Completed</h3>
+        <p id="projects-count">0</p>
+      </div>
+    </div>
+    
+    <div class="graph-section">
+      <h2>XP Progress</h2>
+      <div id="xp-graph"></div>
+    </div>
+    
+    <div class="graph-section">
+      <h2>Project Status</h2>
+      <div id="projects-graph"></div>
+    </div>
+  </div>
+</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
