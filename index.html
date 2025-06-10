@@ -3,53 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Student Profile Dashboard</title>
+    <link rel="stylesheet" href="./web/static/styles.css">
 </head>
 <body>
-    <div id="app">
-  <!-- Login Form -->
-  <div id="login-section" class="card">
-    <input type="text" id="username" placeholder="Username/Email">
-    <input type="password" id="password" placeholder="Password">
-    <button id="login-btn">Login</button>
-    <div id="error-message"></div>
-  </div>
-  
-  <!-- Profile Section -->
-  <div id="profile-section" class="hidden">
-    <header>
-      <h1 id="user-name"></h1>
-      <button id="logout-btn">Logout</button>
-    </header>
-    
-    <div class="stats-grid">
-      <div class="stat-card">
-        <h3>Total XP</h3>
-        <p id="total-xp">0</p>
-      </div>
-      <div class="stat-card">
-        <h3>Audit Ratio</h3>
-        <p id="audit-ratio">0.00</p>
-      </div>
-      <div class="stat-card">
-        <h3>Projects Completed</h3>
-        <p id="projects-count">0</p>
-      </div>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <h1>Student Portal</h1>
+            <div id="errorMessage" class="error-message hidden"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username or Email</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit" class="btn">Sign In</button>
+            </form>
+        </div>
     </div>
-    
-    <div class="graph-section">
-      <h2>XP Progress</h2>
-      <div id="xp-graph"></div>
-    </div>
-    
-    <div class="graph-section">
-      <h2>Project Status</h2>
-      <div id="projects-graph"></div>
-    </div>
-  </div>
-</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="app.js"></script>
+    <!-- Profile Dashboard -->
+    <div id="profilePage" class="container hidden">
+        <div class="profile-header">
+            <h1>Welcome, <span id="userLogin"></span></h1>
+            <button id="logoutBtn" class="btn btn-logout">Logout</button>
+        </div>
+
+        <div id="loadingMessage" class="loading">Loading your profile data...</div>
+
+        <div id="profileContent" class="hidden">
+            <div class="profile-info">
+                <div class="info-card">
+                    <h3>Total XP Earned</h3>
+                    <div class="value" id="totalXP">0</div>
+                    <div class="label">Experience Points</div>
+                </div>
+                <div class="info-card">
+                    <h3>Projects Completed</h3>
+                    <div class="value" id="projectsCompleted">0</div>
+                    <div class="label">Successful Projects</div>
+                </div>
+                <div class="info-card">
+                    <h3>Audit Ratio</h3>
+                    <div class="value" id="auditRatio">0.0</div>
+                    <div class="label">Pass/Fail Ratio</div>
+                </div>
+                <div class="info-card">
+                    <h3>Current Level</h3>
+                    <div class="value" id="currentLevel">1</div>
+                    <div class="label">Based on XP</div>
+                </div>
+            </div>
+
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3>XP Progress Over Time</h3>
+                    <svg class="chart-svg" id="xpChart"></svg>
+                </div>
+                <div class="chart-card">
+                    <h3>Project Success Rate</h3>
+                    <svg class="chart-svg" id="successChart"></svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="web/static/js/config.js"></script>
+    <script src="web/static/js/auth.js"></script>
+    <script src="web/static/js/api.js"></script>
+    <script src="web/static/js/chats.js"></script>
+    <script src="web/static/js/app.js"></script>
 </body>
 </html>
