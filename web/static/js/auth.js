@@ -1,36 +1,94 @@
-// Login Function
-async function login(usernameOrEmail, password) {
-  const credentials = btoa(`${usernameOrEmail}:${password}`);
-  const response = await fetch('https://DOMAIN/api/auth/signin', {
-    method: 'POST',
-    headers: { 'Authorization': `Basic ${credentials}` }
-  });
+// Authentication functions
 
-  if (response.ok) {
-    const { token } = await response.json();
-    localStorage.setItem('jwt', token);
-    return token;
-  } else {
-    throw new Error('Invalid credentials');
-  }
+/**
+ * Handle user login
+ * @param {Event} e - Form submit event
+ */
+async function handleLogin(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+
+    try {
+        // Create Basic Auth header
+        const credentials = btoa(`${username}:${password}`);
+        
+        const response = await fetch(CONFIG.SIGNIN_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Basic ${credentials}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            const token = await response.text();
+            appState.token = token;
+            sessionStorage.setItem('jwt', token);
+            hideError();
+            showProfile();
+            await loadProfileData();
+        } else {
+            showError('Invalid credentials. Please try again.');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        showError('Connection error. Please try again.');
+    }
 }
 
-
-async function fetchGraphQL(query, variables = {}) {
-  const token = localStorage.getItem('jwt');
-  const response = await fetch('https://DOMAIN/api/graphql-engine/v1/graphql', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ query, variables })
-  });
-  return response.json();
+/**
+ * Handle user logout
+ */
+function handleLogout() {
+    appState.token = null;
+    appState.userData = null;
+    sessionStorage.removeItem('jwt');
+    showLogin();
+    document.getElementById('loginForm').reset();
 }
 
-// Logout
-function logout() {
-  localStorage.removeItem('jwt');
-  window.location.reload();
+/**
+ * Check if user is already authenticated
+ */
+function checkExistingAuth() {
+    const token = sessionStorage.getItem('jwt');
+    if (token) {
+        appState.token = token;
+        showProfile();
+        loadProfileData();
+    }
+}
+
+/**
+ * Show login page
+ */
+function showLogin() {
+    document.getElementById('loginPage').classList.remove('hidden');
+    document.getElementById('profilePage').classList.add('hidden');
+}
+
+/**
+ * Show profile page
+ */
+function showProfile() {
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('profilePage').classList.remove('hidden');
+}
+
+/**
+ * Show error message
+ * @param {string} message - Error message to display
+ */
+function showError(message) {
+    const errorDiv = document.getElementById('errorMessage');
+    errorDiv.textContent = message;
+    errorDiv.classList.remove('hidden');
+}
+
+/**
+ * Hide error message
+ */
+function hideError() {
+    document.getElementById('errorMessage').classList.add('hidden');
 }
