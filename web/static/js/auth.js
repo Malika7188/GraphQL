@@ -22,7 +22,7 @@ async function handleLogin(e) {
         });
 
         if (response.ok) {
-            const token = await response.text();
+            const token = await response.json();
             appState.token = token;
             sessionStorage.setItem('jwt', token);
             hideError();

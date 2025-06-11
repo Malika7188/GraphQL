@@ -10,7 +10,7 @@ async function graphqlQuery(query, variables = {}) {
                 'Authorization': `Bearer ${appState.token}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ query, variables })
+            body: JSON.stringify({ query,  }),
         });
 
         const data = await response.json();
@@ -114,14 +114,14 @@ async function loadProfileData() {
 
         if (transactionData?.data?.transaction) {
             userTransactions = transactionData.data.transaction.filter(t => 
-                t.userId === userId && t.type === 'xp'
+                t.type === 'xp'
             );
         }
 
         if (progressData?.data?.progress) {
-            userProgress = progressData.data.progress.filter(p => p.userId === userId);
+            userProgress = progressData.data.progress
         } else if (resultData?.data?.result) {
-            userProgress = resultData.data.result.filter(r => r.userId === userId);
+            userProgress = resultData.data.result
         }
 
         console.log('Filtered data:', {
