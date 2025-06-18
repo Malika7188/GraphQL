@@ -4,7 +4,11 @@
  * Handle user login
  * @param {Event} e - Form submit event
  */
-async function handleLogin(e) {
+
+import { CONFIG } from './config.js';
+import { appState } from './config.js';
+import { loadProfileData } from './api.js';
+export async function handleLogin(e) {
     e.preventDefault();
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -40,7 +44,7 @@ async function handleLogin(e) {
 /**
  * Handle user logout
  */
-function handleLogout() {
+export function handleLogout() {
     appState.token = null;
     appState.userData = null;
     sessionStorage.removeItem('jwt');
@@ -51,7 +55,7 @@ function handleLogout() {
 /**
  * Check if user is already authenticated
  */
-function checkExistingAuth() {
+export function checkExistingAuth() {
     const token = sessionStorage.getItem('jwt');
     if (token) {
         appState.token = token;
