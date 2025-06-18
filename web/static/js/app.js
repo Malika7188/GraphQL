@@ -1,5 +1,4 @@
-// Main application initialization
-
+import { handleLogin, handleLogout, checkExistingAuth } from './auth.js';
 function initApp() {
     setupEventListeners();
     checkExistingAuth();
