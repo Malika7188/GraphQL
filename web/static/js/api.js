@@ -4,6 +4,7 @@ import { generateSuccessChart } from "./charts/successChart.js";
 import { appState } from "./config.js";
 import { formatXP } from "./utils/format.js";
 import { CONFIG } from "./config.js";
+import { getUserIdFromToken } from "./utils/gerenateToken.js";
 
 // Function to make GraphQL queries
 async function graphqlQuery(query, variables = {}) {
@@ -47,9 +48,6 @@ export async function loadProfileData() {
 
     // Set display name as User for now
     document.getElementById("userLogin").textContent = `User ${userId}`;
-
-    // Try the correct GraphQL schema based on the project documentation
-    // The project shows these exact query examples:
 
     // 1. Query user info (simple approach)
     const userQuery = `{
@@ -104,13 +102,14 @@ export async function loadProfileData() {
                 path
             }
         }`;
+console.log("welcome to the progress query");
 
     const progressData = await graphqlQuery(progressQuery);
     console.log("Progress Query Response:", progressData);
 
     // 4. Try result table as alternative
     const resultQuery = `{
-            result {
+            result  (where: {eventId: {_eq: 75}}) {
                 id
                 objectId
                 userId
@@ -125,7 +124,7 @@ export async function loadProfileData() {
     const resultData = await graphqlQuery(resultQuery);
     console.log("Result Query Response:", resultData);
 
-    // Filter data for the current user
+    // After fetching all three: transactionData, progressData, resultData...
     let userTransactions = [];
     let userProgress = [];
 
@@ -135,16 +134,33 @@ export async function loadProfileData() {
       );
     }
 
-    if (progressData?.data?.progress) {
-      userProgress = progressData.data.progress;
-    } else if (resultData?.data?.result) {
-      userProgress = resultData.data.result;
-    }
+    const progressList = progressData?.data?.progress || [];
+    const resultList = resultData?.data?.result || [];
 
-    console.log("Filtered data:", {
-      userTransactions: userTransactions.length,
-      userProgress: userProgress.length,
-    });
+    //Filter for valid grades only
+    const validProgress = progressList.filter(
+      (p) => p.grade !== null && p.grade !== undefined
+    );
+    const validResult = resultList.filter(
+      (r) => r.grade !== null && r.grade !== undefined
+    );
+
+    // Pick the list with more valid grades
+    const selectedList =
+      validProgress.length >= validResult.length ? progressList : resultList;
+
+    //Filter only the current user's data
+    userProgress = selectedList.filter(
+      (p) => String(p.userId) === String(userId)
+    );
+
+    //Debug output (optional)
+    console.log("User ID:", userId);
+    console.log(
+      "Selected source:",
+      selectedList === progressList ? "progress" : "result"
+    );
+    console.log("User progress count:", userProgress.length);
 
     processProfileData(userTransactions, userProgress);
 
@@ -157,27 +173,6 @@ export async function loadProfileData() {
   }
 }
 
-// Helper function to extract user ID from JWT token
-function getUserIdFromToken() {
-  try {
-    if (!appState.token) return null;
-
-    // JWT tokens have 3 parts separated by dots
-    const parts = appState.token.split(".");
-    if (parts.length !== 3) return null;
-
-    // Decode the payload (middle part)
-    const payload = JSON.parse(atob(parts[1]));
-    console.log("JWT Payload:", payload);
-
-    // Look for user ID in common fields
-    return payload.sub || payload.userId || payload.id || payload.user_id;
-  } catch (error) {
-    console.error("Error decoding JWT:", error);
-    return null;
-  }
-}
-
 function processProfileData(transactions, progress) {
   console.log("Processing data:", { transactions, progress });
 
@@ -185,15 +180,10 @@ function processProfileData(transactions, progress) {
   const totalXP = transactions.reduce((sum, t) => sum + (t.amount || 0), 0);
   document.getElementById("totalXP").textContent = formatXP(totalXP);
 
-  // Calculate projects completed
-  const projectsCompleted = progress.filter((p) => p.grade === 1).length;
-  document.getElementById("projectsCompleted").textContent = projectsCompleted;
-
+ 
   // Calculate audit ratio
   const passedProjects = progress.filter((p) => p.grade === 1).length;
   const totalProjects = progress.length;
-  //   const auditRatio =
-  //     totalProjects > 0 ? (passedProjects / totalProjects).toFixed(2) : "0.00";
 
   // Generate charts
   generateXPChart(transactions);
