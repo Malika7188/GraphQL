@@ -1,5 +1,3 @@
-// Authentication functions
-
 /**
  * Handle user login
  * @param {Event} e - Form submit event
