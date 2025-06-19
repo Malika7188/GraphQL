@@ -1,4 +1,4 @@
-import { generateSuccessChart } from './charts/successChat.js';
+import { generateSuccessChart } from './charts/successChart.js';
 import { calculateAuditRatio } from './api.js';
 import { formatXP } from './utils/format.js';
 import { generateXPChart } from './charts/xpChart.js';
@@ -41,7 +41,7 @@ export function processProfileData(transactions, progress) {
     if (totalXPElement) {
         totalXPElement.textContent = formatXP(totalXP);
     }
-     // Calculate current level - FIXED: Add fallback for CONFIG
+    
     const xpPerLevel = (typeof CONFIG !== 'undefined' && CONFIG.XP_PER_LEVEL) ? CONFIG.XP_PER_LEVEL : 1000;
     const currentLevel = Math.floor(totalXP / xpPerLevel) + 1;
     
