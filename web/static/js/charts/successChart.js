@@ -41,9 +41,9 @@ export function generateSuccessChart(progress) {
 
     const width = 460;
     const height = 260;
-    const radius = Math.min(width, height) / 2 - 20;
+    const radius = Math.min(width, height) / 2 - 30;
     const centerX = width / 2;
-    const centerY = height / 2;
+    const centerY = height / 2-20;
 
     const passedAngle = (passed / total) * 2 * Math.PI;
     const failedAngle = (failed / total) * 2 * Math.PI;
@@ -53,7 +53,7 @@ export function generateSuccessChart(progress) {
     // Create pie slices
     if (passed > 0) {
         const passedPath = createPieSlice(centerX, centerY, radius, 0, passedAngle);
-        passedPath.setAttribute('fill', '#48bb78');
+        passedPath.setAttribute('fill', '#2196f3');
         passedPath.innerHTML = `<title>Passed: ${passed} (${(passed/total*100).toFixed(1)}%)</title>`;
         svg.appendChild(passedPath);
 
@@ -61,7 +61,7 @@ export function generateSuccessChart(progress) {
 
     if (failed > 0) {
         const failedPath = createPieSlice(centerX, centerY, radius, passedAngle, passedAngle + failedAngle);
-        failedPath.setAttribute('fill', '#f56565');
+        failedPath.setAttribute('fill', 'red');
         failedPath.innerHTML = `<title>Failed: ${failed} (${(failed/total*100).toFixed(1)}%)</title>`;
         svg.appendChild(failedPath);
         console.log('added failed slice');
