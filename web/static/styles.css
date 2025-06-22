@@ -5,10 +5,11 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f9fafa 0%, #bcd8e6 100%);
+    /* font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    background: linear-gradient(135deg, #eff4f7 0%, #a1cfe7 100%);
     min-height: 100vh;
-    color: #333;
+    color: #171616;
 }
 
 .container {
@@ -40,7 +41,7 @@ body {
 .login-card h1 {
     text-align: center;
     margin-bottom: 30px;
-    color: #2E4A6B;
+    color: #0a0e13;
     font-size: 2rem;
 }
 
@@ -52,7 +53,7 @@ body {
     display: block;
     margin-bottom: 5px;
     font-weight: 600;
-    color: #2E4A6B;
+    color: #0a0e13;
 }
 
 .form-group input {
@@ -93,7 +94,8 @@ body {
 }
 
 .btn-logout {
-    background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%);
+    background: #2196f3;
+    /* background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%); */
     width: auto;
     margin-left: 10px;
 }
@@ -119,7 +121,7 @@ body {
 }
 
 .profile-header h1 {
-    color: #2E4A6B;
+    color: #161d25;
     font-size: 2.5rem;
 }
 
@@ -139,7 +141,7 @@ body {
 }
 
 .info-card h3 {
-    color: #2E4A6B;
+    color: #262b2d;
     margin-bottom: 15px;
     font-size: 1.3rem;
 }
@@ -152,7 +154,7 @@ body {
 }
 
 .info-card .label {
-    color: #546E7A;
+    color: #1c1f21;
     font-size: 0.9rem;
 }
 
@@ -164,15 +166,16 @@ body {
 
 .chart-card {
     background: rgba(255, 255, 255, 0.95);
-    padding: 30px;
+    padding: 50px;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    
 }
 
 .chart-card h3 {
     text-align: center;
     margin-bottom: 20px;
-    color: #2E4A6B;
+    color: #11151a;
     font-size: 1.5rem;
 }
 
@@ -224,9 +227,10 @@ body {
 }
 
 .axis-text {
-    fill: #2E4A6B;
+    fill: #0d1013;
     font-size: 12px;
     font-family: inherit;
+    
 }
 
 .chart-title {
@@ -234,4 +238,74 @@ body {
     font-size: 14px;
     font-weight: bold;
     text-anchor: middle;
+}
+.info-card.campus-info {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+    /* background-color: #2E4A6B; */
+    background: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(41, 182, 246, 0.05);
+    padding: 25px; /* keep same as .info-card */
+    border-radius: 15px; /* keep same as .info-card */
+    border-left: 5px solid #29B6F6; /* keep same as .info-card */
+    margin-bottom: 20px; /* remove extra margin if needed */
+    width: 250px;
+    
+}
+
+.info-card.campus-info .label {
+    margin-right: 8px;
+    /* color: #546E7A; */
+    color: #262b2d;
+    font-weight: 800;
+    font-size: larger;
+}
+
+.info-card.campus-info #userCampus {
+    color: #03A9F4;
+    font-weight: bold;
+    margin-left: 5px;
+    font-size: 1.15em;
+}.info-card,
+.info-card.campus-info {
+    transition: transform 0.25s cubic-bezier(0.4,0.2,0.2,1), box-shadow 0.25s cubic-bezier(0.4,0.2,0.2,1);
+}
+
+.info-card:hover,
+.info-card.campus-info:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 32px rgba(41, 182, 246, 0.18), 0 2px 8px rgba(41, 182, 246, 0.10);
+    z-index: 2;
+}/* Thin line for line graph */
+.line {
+    fill: none;
+    stroke: #2196f3;
+    stroke-width: 2;
+    opacity: 0.95;
+    filter: drop-shadow(0 1px 2px #b3e5fc55);
+    transition: stroke-width 0.2s;
+}
+
+/* Hide or shrink dots */
+.dot {
+    fill: #2196f3;
+    stroke: none;
+    r: 1.5;
+    opacity: 0.7;
+    transition: r 0.2s;
+}
+.dot:hover {
+    r: 2.5;
+}
+
+/* Chart card animation */
+.chart-card {
+    transition: transform 0.25s cubic-bezier(0.4,0.2,0.2,1), box-shadow 0.25s cubic-bezier(0.4,0.2,0.2,1);
+}
+.chart-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 32px rgba(41, 182, 246, 0.18), 0 2px 8px rgba(41, 182, 246, 0.10);
+    z-index: 2;
 }
