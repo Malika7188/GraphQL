@@ -52,6 +52,7 @@ export async function loadProfileData() {
     // 1. Query user info (simple approach)
     const userQuery = `{
             user {
+            campus
                 id
                 login
                 attrs
@@ -59,7 +60,7 @@ export async function loadProfileData() {
                  events(where: {eventId: {_eq: 75}}) {
                   level
                  }
-            }
+          }
         }`;
 
     const data = await graphqlQuery(userQuery);
@@ -67,8 +68,11 @@ export async function loadProfileData() {
     console.log("User Query Response:", userData);
 
     if (userData) {
-      document.getElementById("userLogin").textContent = userData.login;
-      document.getElementById("auditRatio").textContent =
+ const userLoginElem = document.getElementById("userLogin");
+  if (userLoginElem) userLoginElem.textContent = userData.login;
+
+  const userCampusElem = document.getElementById("userCampus");
+  if (userCampusElem) userCampusElem.textContent = userData.campus;      document.getElementById("auditRatio").textContent =
         userData.auditRatio.toFixed(2);
       document.getElementById("currentLevel").textContent =
         userData.events[0].level;
