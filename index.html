@@ -30,11 +30,16 @@
     <div id="profilePage" class="container hidden">
         <div class="profile-header">
             <h1>Welcome, <span id="userLogin"></span></h1>
+              <!-- <span id="userCampus" class="label"></span> -->
             <button id="logoutBtn" class="btn btn-logout">Logout</button>
         </div>
 
         <div id="loadingMessage" class="loading">Loading your profile data...</div>
-
+        <div class="card" id="studentCard">
+<div class="info-card campus-info">
+  <span class="label">Campus:</span>
+  <span id="userCampus">Loading...</span>
+</div>
         <div id="profileContent" class="hidden">
             <div class="profile-info">
                 <div class="info-card">
