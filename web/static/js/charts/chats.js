@@ -47,9 +47,6 @@ export function showNoDataMessage(svg, message) {
     svg.appendChild(text);
 }
 
-
-
-
 /**
  * Draw XP progress dots
  * @param {SVGElement} g - Group element
@@ -81,13 +78,16 @@ export function drawXPDots(g, chartData, xScale, yScale) {
  */
 export function createPieChartLegend(svg, width, height, passed, failed) {
     const legend = createSVGElement('g');
-    legend.setAttribute('transform', `translate(20, ${height - 40})`);
+
+    const legendWidth = 180; 
+    const legendX = (width - legendWidth) / 2;
+    const legendY = height - 5; // 20px from the bottom
+    // legend.setAttribute('transform', `translate(20, ${height - 10})`);
+    legend.setAttribute('transform', `translate(${legendX}, ${legendY})`);
 
     // Passed legend
-    createLegendItem(legend, 0, 0, '#48bb78', `Passed (${passed})`);
-    
-    // Failed legend
-    createLegendItem(legend, 120, 0, '#f56565', `Failed (${failed})`);
+    createLegendItem(legend, 0, 0, '#2196f3', `Passed (${passed})`);
+    createLegendItem(legend, 120, 0, 'red', `Failed (${failed})`);
 
     svg.appendChild(legend);
 }
