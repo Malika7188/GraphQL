@@ -61,7 +61,7 @@ export function generateXPChart(transactions) {
     drawXPDots(g, chartData, xScale, yScale);
 
     // Add labels
-    addAxisLabel(g, -50, 15, 'XP'); // CHANGED: Moved from 20 to -50 to accommodate wider margin
+    addAxisLabel(g, -80, 15, 'XP'); // CHANGED: Moved from 20 to -50 to accommodate wider margin
 
     svg.appendChild(g);
 }
