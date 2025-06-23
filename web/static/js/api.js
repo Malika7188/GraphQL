@@ -68,11 +68,12 @@ export async function loadProfileData() {
     console.log("User Query Response:", userData);
 
     if (userData) {
- const userLoginElem = document.getElementById("userLogin");
-  if (userLoginElem) userLoginElem.textContent = userData.login;
+      const userLoginElem = document.getElementById("userLogin");
+      if (userLoginElem) userLoginElem.textContent = userData.login;
 
-  const userCampusElem = document.getElementById("userCampus");
-  if (userCampusElem) userCampusElem.textContent = userData.campus;      document.getElementById("auditRatio").textContent =
+      const userCampusElem = document.getElementById("userCampus");
+      if (userCampusElem) userCampusElem.textContent = userData.campus;
+      document.getElementById("auditRatio").textContent =
         userData.auditRatio.toFixed(2);
       document.getElementById("currentLevel").textContent =
         userData.events[0].level;
@@ -94,6 +95,39 @@ export async function loadProfileData() {
     const transactionData = await graphqlQuery(transactionQuery);
     console.log("Transaction Query Response:", transactionData);
 
+    // Define the skills you want to track
+    const skillNames = [
+      "skill_go",
+      "skill_js",
+      "skill_back-end",
+      "skill_front-end",
+      "skill_prog", "skill_ai",
+    ];
+    let highestSkills = {};
+
+    if (transactionData?.data?.transaction) {
+      // Filter only current user's transactions and type in skillNames
+      const userSkillTx = transactionData.data.transaction.filter((t) =>
+        t.type.includes("skill")
+      );
+      // For each skill, find the highest value
+      skillNames.forEach((skill) => {
+        const skillTx = userSkillTx.filter((t) => t.type === skill);
+        if (skillTx.length > 0) {
+          highestSkills[skill] = Math.max(...skillTx.map((t) => t.amount || 0));
+        } else {
+          highestSkills[skill] = 0;
+        }
+      });
+
+    }
+    // Display the highest skill values (example: update DOM elements)
+    skillNames.forEach((skill) => {
+      const htmlId = `skill-${skill.replace("skill_", "")}`;
+      const elem = document.getElementById(htmlId);
+      if (elem) elem.textContent = highestSkills[skill] + "%";
+    });
+
     // 3. Query progress - using project documentation format
     const progressQuery = `{
             progress(where: {eventId: {_eq: 75}}) {
@@ -106,7 +140,7 @@ export async function loadProfileData() {
                 path
             }
         }`;
-console.log("welcome to the progress query");
+    console.log("welcome to the progress query");
 
     const progressData = await graphqlQuery(progressQuery);
     console.log("Progress Query Response:", progressData);
@@ -184,7 +218,6 @@ function processProfileData(transactions, progress) {
   const totalXP = transactions.reduce((sum, t) => sum + (t.amount || 0), 0);
   document.getElementById("totalXP").textContent = formatXP(totalXP);
 
- 
   // Calculate audit ratio
   const passedProjects = progress.filter((p) => p.grade === 1).length;
   const totalProjects = progress.length;
